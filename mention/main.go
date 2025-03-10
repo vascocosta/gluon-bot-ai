@@ -1,0 +1,45 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+
+	"github.com/vascocosta/gluon-bot-ai/cli"
+	"github.com/vascocosta/gluon-bot-ai/config"
+	"github.com/vascocosta/gluon-bot-ai/request"
+	"github.com/vascocosta/gluon-bot-ai/utils"
+)
+
+const ConfigFile = ".gluon-bot-ai.json"
+
+func main() {
+	// Parse the CLI arguments.
+	args, err := cli.ParseArgs(os.Args)
+	utils.Try(err, utils.Exit)
+
+	// Load and render a config from a local JSON file.
+	// Render replaces placeholders with config values.
+	homeDir, err := os.UserHomeDir()
+	utils.Try(err, utils.Exit)
+	cfg, err := config.LoadConfig(filepath.Join(homeDir, ConfigFile))
+	utils.Try(err, utils.Exit)
+	cfg.Render()
+
+	// Get the API key from the environment.
+	key, present := os.LookupEnv("GAI_KEY")
+	if !present {
+		log.Println("Could not find API key.")
+		os.Exit(1)
+	}
+
+	request, err := request.NewRequest(args, key, cfg)
+	utils.Try(err, utils.Exit)
+	response, err := request.Send()
+	utils.Try(err, utils.Exit)
+
+	for _, line := range response {
+		fmt.Print(line)
+	}
+}
