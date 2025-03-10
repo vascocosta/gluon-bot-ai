@@ -28,12 +28,15 @@ func main() {
 	utils.Try(err, utils.Exit)
 	cfg.Render()
 
+	// Get the API key from an environment variable.
 	key, present := os.LookupEnv("GAI_KEY")
 	if !present {
 		log.Println("Could not get API key.")
 		os.Exit(1)
 	}
 
+	// Main loop where we make a request, print a response and then wait.
+	// The output file is cfg.OutPath and the interval is cfg.SleepTime.
 	for {
 		request, err := request.NewRequest(args, key, cfg)
 		if err != nil {

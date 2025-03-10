@@ -27,13 +27,14 @@ func main() {
 	utils.Try(err, utils.Exit)
 	cfg.Render()
 
-	// Get the API key from the environment.
+	// Get the API key from an environment variable.
 	key, present := os.LookupEnv("GAI_KEY")
 	if !present {
 		log.Println("Could not find API key.")
 		os.Exit(1)
 	}
 
+	// Make a request and then print the response.
 	request, err := request.NewRequest(args, key, cfg)
 	utils.Try(err, utils.Exit)
 	response, err := request.Send()
