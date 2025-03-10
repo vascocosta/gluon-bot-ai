@@ -36,7 +36,7 @@ func main() {
 	}
 
 	// Main loop where we make a request, print a response and then wait.
-	// The output file is cfg.OutPath and the interval is cfg.SleepTime.
+	// We print the output to the bot's spool file set in cfg.OutPath.
 	for {
 		request, err := request.NewRequest(args, key, cfg)
 		if err != nil {
@@ -47,6 +47,7 @@ func main() {
 			continue
 		}
 
+		// Only care to print something if we get a response.
 		if len(response) > 0 {
 			f, err := os.Create(cfg.OutPath)
 			if err != nil {
@@ -63,6 +64,7 @@ func main() {
 			f.Close()
 		}
 
+		// Sleep for the amount of minutes set in the config.
 		time.Sleep(cfg.SleepTime * time.Minute)
 
 	}
