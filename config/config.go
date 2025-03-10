@@ -15,6 +15,7 @@ type Config struct {
 	LogLines       int           `json:"log_lines"`
 	ParagraphChars int           `json:"paragraph_chars"`
 	TotalChars     int           `json:"total_chars"`
+	TalkProb       int           `json:"talk_prob"`
 	SleepTime      time.Duration `json:"sleep_time"`
 	SystemPrompt   []string      `json:"system_prompt"`
 }

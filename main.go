@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"time"
@@ -36,35 +37,38 @@ func main() {
 	}
 
 	// Main loop where we make a request, print a response and then wait.
+	// The probability of actually talking each time is set in cfg.TalkProb.
 	// We print the output to the bot's spool file set in cfg.OutPath.
 	for {
-		// The Prompts for the request come from the CLI args and config.
-		// If either the request or response fail we continue the loop.
-		request, err := request.NewRequest(args, key, cfg)
-		if err != nil {
-			continue
-		}
-		response, err := request.Send()
-		if err != nil {
-			continue
-		}
-
-		// Only care to print something if we actually get a response.
-		// If opening/writing the spool file fails we continue the loop.
-		if len(response) > 0 {
-			f, err := os.Create(cfg.OutPath)
+		if rand.Intn(100) <= cfg.TalkProb {
+			// The Prompts for the request come from the CLI args and config.
+			// If either the request or response fail we continue the loop.
+			request, err := request.NewRequest(args, key, cfg)
 			if err != nil {
-				f.Close()
+				continue
+			}
+			response, err := request.Send()
+			if err != nil {
 				continue
 			}
 
-			_, err = fmt.Fprintf(f, "%s %s", args.Channel, response[0])
-			if err != nil {
-				f.Close()
-				continue
-			}
+			// Only care to print something if we actually get a response.
+			// If opening/writing the spool file fails we continue the loop.
+			if len(response) > 0 {
+				f, err := os.Create(cfg.OutPath)
+				if err != nil {
+					f.Close()
+					continue
+				}
 
-			f.Close()
+				_, err = fmt.Fprintf(f, "%s %s", args.Channel, response[0])
+				if err != nil {
+					f.Close()
+					continue
+				}
+
+				f.Close()
+			}
 		}
 
 		// Sleep for the amount of minutes set in the config.
