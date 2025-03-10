@@ -49,7 +49,8 @@ func main() {
 			continue
 		}
 
-		// Only care to print something if we get a response.
+		// Only care to print something if we actually get a response.
+		// If opening/writing the spool file fails we continue the loop.
 		if len(response) > 0 {
 			f, err := os.Create(cfg.OutPath)
 			if err != nil {
