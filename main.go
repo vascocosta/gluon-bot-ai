@@ -38,6 +38,8 @@ func main() {
 	// Main loop where we make a request, print a response and then wait.
 	// We print the output to the bot's spool file set in cfg.OutPath.
 	for {
+		// The Prompts for the request come from the CLI args and config.
+		// If either the request or response fail we continue the loop.
 		request, err := request.NewRequest(args, key, cfg)
 		if err != nil {
 			continue
