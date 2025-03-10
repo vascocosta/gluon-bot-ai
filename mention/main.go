@@ -34,7 +34,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Make a request and then print the response.
+	// Make a request and then print the response to the std output.
+	// The prompts for the request come from the CLI args and config.
 	request, err := request.NewRequest(args, key, cfg)
 	utils.Try(err, utils.Exit)
 	response, err := request.Send()
