@@ -6,16 +6,16 @@ import (
 	"os"
 )
 
-type TryType string
+type ErrorAction string
 
 const (
-	Exit  TryType = "exit"
-	Fatal TryType = "fatal"
+	Exit  ErrorAction = "exit"
+	Fatal ErrorAction = "fatal"
 )
 
-func Try(err error, tryType TryType) {
+func CheckError(err error, errAction ErrorAction) {
 	if err != nil {
-		switch tryType {
+		switch errAction {
 		case Exit:
 			log.Println(err)
 			os.Exit(1)

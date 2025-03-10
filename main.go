@@ -19,14 +19,14 @@ const ConfigFile = ".gluon-bot-ai.json"
 func main() {
 	// Parse the CLI arguments.
 	args, err := cli.ParseArgs(os.Args)
-	utils.Try(err, utils.Exit)
+	utils.CheckError(err, utils.Exit)
 
 	// Load and render a config from a local JSON file.
 	// Render replaces placeholders with config values.
 	homeDir, err := os.UserHomeDir()
-	utils.Try(err, utils.Exit)
+	utils.CheckError(err, utils.Exit)
 	cfg, err := config.LoadConfig(filepath.Join(homeDir, ConfigFile))
-	utils.Try(err, utils.Exit)
+	utils.CheckError(err, utils.Exit)
 	cfg.Render()
 
 	// Get the API key from an environment variable.
