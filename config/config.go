@@ -17,6 +17,7 @@ type Config struct {
 	TotalChars     int           `json:"total_chars"`
 	TalkProb       int           `json:"talk_prob"`
 	SleepTime      time.Duration `json:"sleep_time"`
+	ModelTemp      float32       `json:"model_temp"`
 	SystemPrompt   []string      `json:"system_prompt"`
 }
 

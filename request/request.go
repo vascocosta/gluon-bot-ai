@@ -52,6 +52,7 @@ func (r *Request) Send() ([]string, error) {
 	// system prompt and generate content according to the provided prompt.
 	model := client.GenerativeModel(r.cfg.ModelName)
 	model.SystemInstruction = genai.NewUserContent(r.systemPrompt...)
+	model.SetTemperature(r.cfg.ModelTemp)
 	resp, err := model.GenerateContent(ctx, r.userPrompt)
 	if err != nil {
 		return response, err
